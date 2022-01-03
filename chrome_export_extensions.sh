@@ -13,8 +13,14 @@ do
 		echo "Found profile ${file}"
 		for content in ${file}/Extensions/*
 		do
-			echo $content
-			find $content  -name manifest.json -print0 | xargs -0  grep 'name\":'
+			#echo $content
+			MANIFEST=$(find $content  -name manifest.json)
+			# echo $MANIFEST
+			EXT_ID=$(basename $content)
+			# echo $EXT_ID
+			URL=$(echo $EXT_ID | awk '{ print "https://chrome.google.com/webstore/detail/" $NF }')
+			echo -n "$URL - " 
+			curl -sL "$URL" | pup 'title text{}'
 		done
 		echo
 	fi

@@ -11,7 +11,11 @@ do
 	if [[ "$NAME" == "Profile"* ]];
 	then
 		echo "Found profile ${file}"
-		ls -1 "${file}/Extensions"  | awk '{ print "https://chrome.google.com/webstore/detail/" $NF }'
+		for content in ${file}/Extensions/*
+		do
+			echo $content
+			find $content  -name manifest.json -print0 | xargs -0  grep 'name\":'
+		done
 		echo
 	fi
 done
